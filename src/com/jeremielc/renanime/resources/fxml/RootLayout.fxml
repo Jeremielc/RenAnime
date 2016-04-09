@@ -7,25 +7,25 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="315.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40" fx:controller="com.jeremielc.renanime.resources.fxml.RootLayoutController">
-   <children>
-      <MenuBar layoutX="14.0" layoutY="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="?">
-            <items>
-                  <MenuItem mnemonicParsing="false" text="Help" />
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <TextField layoutY="25.0" prefHeight="25.0" prefWidth="510.0" promptText="Path to anime folder" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="35.0" />
-      <Button layoutX="534.0" layoutY="35.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="55.0" text="Browse" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="35.0" />
-      <TextArea layoutX="14.0" layoutY="186.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-      <Button layoutX="533.0" layoutY="374.0" mnemonicParsing="false" text="RenAnime !" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="14.0" />
-   </children>
+    <children>
+        <MenuBar layoutX="14.0" layoutY="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="?">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Help" />
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <TextField layoutY="25.0" prefHeight="25.0" prefWidth="510.0" promptText="Path to anime folder" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="35.0" />
+        <Button layoutX="534.0" layoutY="35.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="55.0" text="Browse" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="35.0" />
+        <TextArea layoutX="14.0" layoutY="186.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+        <Button layoutX="533.0" layoutY="374.0" mnemonicParsing="false" text="RenAnime !" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="14.0" />
+    </children>
 </AnchorPane>
