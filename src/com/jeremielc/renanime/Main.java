@@ -21,7 +21,7 @@ public class Main extends Application {
         try {
             AnchorPane rootLayout = loader.load();
             Scene scene = new Scene(rootLayout);
-            
+
             primaryStage.setTitle("RenAnime");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -36,5 +36,4 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }
