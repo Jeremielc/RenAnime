@@ -1,6 +1,9 @@
 package com.jeremielc.renanime.resources.fxml;
 
+import com.jeremielc.renanime.fileManagement.FileManager;
+import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -18,9 +21,15 @@ public class RootLayoutController implements Initializable {
 
     @FXML
     private TextField animeName, animeFolderPath;
-
     @FXML
     private TextArea titlesArea;
+    private final FileManager fm;
+    private List<File> listOfAnimeFiles;
+
+    public RootLayoutController() {
+        fm = new FileManager();
+        listOfAnimeFiles = null;
+    }
 
     /**
      * Initializes the controller class.
@@ -44,7 +53,11 @@ public class RootLayoutController implements Initializable {
 
     @FXML
     public void handleBrowse() {
-        System.out.println("Browse");
+        listOfAnimeFiles = fm.retrieveAnimeFiles();
+
+        if (listOfAnimeFiles != null) {
+            animeFolderPath.setText(listOfAnimeFiles.get(0).getParent());
+        }
     }
 
     @FXML
@@ -65,6 +78,8 @@ public class RootLayoutController implements Initializable {
     public void handleRenanime() {
         if (!animeName.getText().equals("") && !animeFolderPath.getText().equals("")) {
             System.out.println("RenAnime !");
+            fm.renameAnimeFiles(animeName.getText(), listOfAnimeFiles, null);
+            //Manage the case where number of title is different of number of files.
         } else {
             System.out.println("Please specifiy a path and a name for the anime.");
         }
