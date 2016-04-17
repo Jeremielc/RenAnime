@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Window;
 
 /**
- * FXML Controller class
+ * FXML Controller class of RootLayout.
  *
  * @author jeremielc : le.microarchitechte@gmail.com
  */
@@ -48,9 +48,12 @@ public class RootLayoutController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+
     }
 
+    /**
+     * Show the about window of the program.
+     */
     @FXML
     public void handleAbout() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -61,6 +64,9 @@ public class RootLayoutController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Allow the user to select the files to rename.
+     */
     @FXML
     public void handleBrowse() {
         listOfAnimeFiles = fm.retrieveAnimeFiles();
@@ -71,10 +77,16 @@ public class RootLayoutController implements Initializable {
     }
 
     @FXML
+    /**
+     * Close the application.
+     */
     public void handleClose() {
         Platform.exit();
     }
 
+    /**
+     * Show the help window of the program.
+     */
     @FXML
     public void handleHelp() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -85,6 +97,10 @@ public class RootLayoutController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Provide other classes with necessary informations to rename the files.
+     * Proceed with those informations.
+     */
     @FXML
     public void handleRenanime() {
         if (!animeName.getText().equals("") && !animeFolderPath.getText().equals("")) {

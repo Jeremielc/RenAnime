@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
+ * Initializes the main javaFX window.
  *
  * @author jeremielc : le.microarchitechte@gmail.com
  */
@@ -23,7 +24,7 @@ public class Main extends Application {
         try {
             AnchorPane rootLayout = loader.load();
             Scene scene = new Scene(rootLayout);
-            
+
             RootLayoutController rlc = loader.getController();
             rlc.setOwner(primaryStage);
 

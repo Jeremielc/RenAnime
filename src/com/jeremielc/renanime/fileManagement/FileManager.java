@@ -6,17 +6,28 @@ import java.util.StringTokenizer;
 import javafx.stage.FileChooser;
 
 /**
+ * This class contains all methods to manage files (retrieve a list of files and
+ * rename them).
  *
-* @author jeremielc : le.microarchitechte@gmail.com
+ * @author jeremielc : le.microarchitechte@gmail.com
  */
 public class FileManager {
 
     private File directoryPath;
 
+    /**
+     * Instanciate the file manager with a directory path set by default to the
+     * user home directory.
+     */
     public FileManager() {
         directoryPath = new File(System.getProperty("user.home"));
     }
 
+    /**
+     * Let the user choose multiple files to rename.
+     *
+     * @return A list of files, selected by the user.
+     */
     public List<File> retrieveAnimeFiles() {
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(directoryPath);
@@ -32,6 +43,16 @@ public class FileManager {
         }
     }
 
+    /**
+     * Allow to rename files in bulk following the format "Anime name - Episode
+     * xx - Episode title.ext"
+     *
+     * @param animeName A string representing the name of the anime.
+     * @param listOfAnimeFiles The list of file to rename.
+     * @param listOfTitles List of episodes titles.
+     * @param isThereTitles Indicate if titles must be writen or not. True if
+     * titles must be present in the file name, false otherwise.
+     */
     public void renameAnimeFiles(String animeName, List<File> listOfAnimeFiles, List<String> listOfTitles, boolean isThereTitles) {
         File dest;
         StringTokenizer st;
@@ -48,7 +69,7 @@ public class FileManager {
             path = listOfAnimeFiles.get(i).getParent() + File.separator;
             if (isThereTitles) {
                 path += animeName + " - " + "Episode " + String.format("%0" + integerSizeMax + "d", i + 1);
-                
+
                 if (!listOfTitles.get(i).equals("")) {
                     path += " - " + listOfTitles.get(i) + "." + fileExtension;
                 } else {
