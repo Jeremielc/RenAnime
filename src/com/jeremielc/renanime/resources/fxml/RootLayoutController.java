@@ -31,10 +31,6 @@ public class RootLayoutController implements Initializable {
     private List<File> listOfAnimeFiles;
     private Window owner;
 
-    public void setOwner(Window owner) {
-        this.owner = owner;
-    }
-
     public RootLayoutController() {
         fm = new FileManager();
         listOfAnimeFiles = null;
@@ -140,5 +136,9 @@ public class RootLayoutController implements Initializable {
         } else {
             System.out.println("Please specifiy a path and a name for the anime.");
         }
+    }
+    
+    public void setOwner(Window owner) {
+        this.owner = owner;
     }
 }
