@@ -58,7 +58,7 @@ public class RootLayoutController implements Initializable {
         alert.setContentText("RenAnime v1.0 - Jérémie Leclerc <le.microarchitechte@gmail.com>\n\n"
                 + "This software is provided under the GNU General Public Licence (check the LICENSE text file to learn more about this).\n\n"
                 + "This software is intended to rename files in bulk using user provided infos.\n\n"
-                + "By providing an anime name, a list of files and a list of titles, the software formats it folowing the scheme below : \n"
+                + "By providing an anime name, a list of files and a list of titles, the software formats it following the scheme below : \n"
                 + "\t\"Anime name - Episode xx - Episode title.ext\"");
 
         alert.showAndWait();
@@ -92,7 +92,14 @@ public class RootLayoutController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.initOwner(owner);
         alert.setTitle("RenAnime - Help");
-        alert.setContentText("Not implemented yet.");
+        alert.setContentText("To use this software, provide an anime name and a list of files to rename. "
+                + "If You want, you can add a list of titles (separated by semicolon (';').\n\n"
+                + "The files you provided before will be renamed following this scheme : \n"
+                + "\t\"Anime name - Episode xx - Episode title.ext\"\n"
+                + " or if no titles mentioned : \n"
+                + "\t\"Anime name - Episode xx.ext\"\n\n"
+                + "If there is less titles specified than files number, the firsts files will be renamed "
+                + "following the first scheme and the others following the seccond scheme.");
 
         alert.showAndWait();
     }
@@ -141,7 +148,7 @@ public class RootLayoutController implements Initializable {
             System.out.println("Please specifiy a path and a name for the anime.");
         }
     }
-    
+
     public void setOwner(Window owner) {
         this.owner = owner;
     }
