@@ -56,9 +56,11 @@ public class RootLayoutController implements Initializable {
         alert.initOwner(owner);
         alert.setTitle("RenAnime - About");
         alert.setContentText("RenAnime v1.0 - Jérémie Leclerc <le.microarchitechte@gmail.com>\n\n"
-                + "This software is provided under the GNU General Public Licence (check the LICENSE text file to learn more about this).\n\n"
+                + "This software is provided under the GNU General Public Licence "
+                + "(check the LICENSE text file to learn more about this).\n\n"
                 + "This software is intended to rename files in bulk using user provided infos.\n\n"
-                + "By providing an anime name, a list of files and a list of titles, the software formats it following the scheme below : \n"
+                + "By providing an anime name, a list of files and a list of titles, "
+                + "the software formats it following the scheme below : \n"
                 + "\t\"Anime name - Episode xx - Episode title.ext\"");
 
         alert.showAndWait();
