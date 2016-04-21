@@ -1,4 +1,4 @@
-package com.jeremielc.renanime.utils;
+package com.jeremielc.renanime.titles;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,9 +24,10 @@ public class TitlesParser {
     public TitlesParser(String animeName, String titleUrl) {
         this.animeName = animeName;
         this.titleUrl = titleUrl;
+        fetchTitles();
     }
 
-    public void fetchTitles() {
+    private void fetchTitles() {
         File dbDir = new File("fetched_files/");
         if (!dbDir.exists()) {
             dbDir.mkdir();
@@ -62,7 +63,7 @@ public class TitlesParser {
         }
     }
 
-    public ArrayList<String> parseHtmlFileForTitles() {
+    public ArrayList<String> parseTitles() {
         File titleFile = new File("fetched_files/" + animeName + ".html");
         ArrayList<String> titles = new ArrayList<>();
 
@@ -132,7 +133,11 @@ public class TitlesParser {
         while (st.hasMoreTokens()) {
             title = st.nextToken();
         }
-
+        
+        title = title.replaceAll("&#039;", "'");
+        title = title.replaceAll("[?]+", "!");
+        title = title.replaceAll(":", "");
+        
         return title;
     }
 }

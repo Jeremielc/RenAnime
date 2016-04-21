@@ -1,6 +1,11 @@
 package com.jeremielc.renanime.fileManagement;
 
+import com.jeremielc.renanime.pojo.Anime;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import javafx.stage.FileChooser;
@@ -28,7 +33,7 @@ public class FileManager {
      *
      * @return A list of files, selected by the user.
      */
-    public List<File> retrieveAnimeFiles() {
+    public ArrayList<File> retrieveAnimeFiles() {
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(directoryPath);
         chooser.setTitle("Select anime's files.");
@@ -37,7 +42,7 @@ public class FileManager {
 
         if (listOfAnimeFiles != null) {
             directoryPath = listOfAnimeFiles.get(0);
-            return listOfAnimeFiles;
+            return (ArrayList<File>) listOfAnimeFiles;
         } else {
             return null;
         }
@@ -88,4 +93,27 @@ public class FileManager {
         }
     }
 
+    /**
+     * Allow to get the anime's title and the url where to find episodes titles.
+     *
+     * @param animeNumber A string representing the MyAnimeList ID number of the
+     * episode.
+     */
+    public void retrieveAnimeData(String animeNumber, Anime anime) {
+        try {
+            File textFile = new File("fetched_files/" + animeNumber + ".txt");
+
+            if (textFile.exists()) {
+                BufferedReader br = new BufferedReader(new FileReader(textFile));
+                anime.setAnimeTitle(br.readLine().replace("title : ", "").trim());
+                anime.setEpisodeUrl(br.readLine().replace("episodes : ", "").trim());
+
+                br.close();
+            } else {
+                System.out.println("Unable to load " + textFile.getName());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
 }

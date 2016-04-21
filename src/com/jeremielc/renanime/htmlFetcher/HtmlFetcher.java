@@ -11,18 +11,21 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author Jérémie Leclerc
+ * @author jeremielc : le.microarchitechte@gmail.com
  */
 public class HtmlFetcher {
-    
+
     public static final int MAX_ANIME_NUMBER = 33212;
+    private final String baseUrl;
+    private String animeId, animeTitle, animeEpUrl;
 
-    public HtmlFetcher() {
-
+    public HtmlFetcher(String baseUrl) {
+        this.baseUrl = baseUrl;
+        fetchContent();
     }
 
-    public void fetchContent(String baseUrl) {
-        String animeNumber = retrieveAnimeNumber(baseUrl);
+    private void fetchContent() {
+        String animeId = retrieveAnimeIdentifier(baseUrl);
 
         File dbDir = new File("fetched_files/");
         if (!dbDir.exists()) {
@@ -30,7 +33,7 @@ public class HtmlFetcher {
         }
 
         if (dbDir.exists()) {
-            File dbFile = new File("fetched_files/" + animeNumber + ".txt");
+            File dbFile = new File("fetched_files/" + animeId + ".txt");
 
             try {
                 URL url = new URL(baseUrl);
@@ -43,7 +46,7 @@ public class HtmlFetcher {
                 if (code == 200) {
                     BufferedReader br;
                     Boolean isThereEpisodeLink = false;
-                    
+
                     try (FileWriter fw = new FileWriter(dbFile)) {
                         br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
@@ -85,16 +88,17 @@ public class HtmlFetcher {
         }
     }
 
-    public String retrieveAnimeNumber(String url) {
-        String animeNumber = null, previousToken;
+    private String retrieveAnimeIdentifier(String url) {
+        String animeId = null, previousToken;
         StringTokenizer st = new StringTokenizer(url, "/");
 
         do {
-            previousToken = animeNumber;
-            animeNumber = st.nextToken();
+            previousToken = animeId;
+            animeId = st.nextToken();
         } while (st.hasMoreTokens());
 
-        return previousToken;
+        animeId = previousToken;
+        return animeId;
     }
 
     private String retrieveAnimeEpisodes(String rawString) {
@@ -102,6 +106,7 @@ public class HtmlFetcher {
         String episodeLink = st.nextToken();
         episodeLink = st.nextToken();
 
+        animeEpUrl = episodeLink;
         return episodeLink;
     }
 
@@ -109,6 +114,33 @@ public class HtmlFetcher {
         String cleanString = rawString.replace(" - MyAnimeList.net", "");
         cleanString = cleanString.trim();
 
+        animeTitle = cleanString;
         return cleanString;
     }
+
+    public String getAnimeId() {
+        return animeId;
+    }
+
+    public void setAnimeId(String animeId) {
+        this.animeId = animeId;
+    }
+
+    public String getAnimeTitle() {
+        return animeTitle;
+    }
+
+    public void setAnimeTitle(String animeTitle) {
+        this.animeTitle = animeTitle;
+    }
+
+    public String getAnimeEpUrl() {
+        return animeEpUrl;
+    }
+
+    public void setAnimeEpUrl(String animeEpUrl) {
+        this.animeEpUrl = animeEpUrl;
+    }
+    
+    
 }
