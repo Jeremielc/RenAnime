@@ -8,6 +8,7 @@ import com.jeremielc.renanime.titles.TitlesParser;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -30,7 +31,7 @@ public class RootLayoutController implements Initializable {
     private TextField animeName, animeFolderPath;
     @FXML
     private TextArea titlesArea;
-    private ArrayList<File> listOfAnimeFiles;
+    private List<File> listOfAnimeFiles;
     private Window owner;
 
     public RootLayoutController() {
@@ -134,6 +135,7 @@ public class RootLayoutController implements Initializable {
                 }
             } else if (!titlesArea.getText().equals("")) {
                 TitlesManager tm = new TitlesManager();
+
                 if (titlesArea.getText().contains("http://myanimelist.net/anime")) {  //If titles have to be fetch from my anime list website.
                     HtmlFetcher hf = new HtmlFetcher(titlesArea.getText());
                     anime.setAnimeId(hf.getAnimeId());
@@ -143,14 +145,11 @@ public class RootLayoutController implements Initializable {
                     anime.setEpisodeList(tp.parseTitles());
 
                     String fullTitleString = "";
-                    for (String s : anime.getEpisodeList()) {
-                        fullTitleString += s + '\n';
+                    for (String str : anime.getEpisodeList()) {
+                        fullTitleString += str + '\n';
                     }
 
                     titlesArea.setText(fullTitleString);
-                    /*
-                     * **********http://myanimelist.net/anime/31580************
-                     */
                 } else {
                     anime.setEpisodeList(tm.retrieveTitleList(titlesArea.getText()));
                 }

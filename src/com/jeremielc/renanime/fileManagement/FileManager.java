@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import javafx.stage.FileChooser;
@@ -33,7 +32,7 @@ public class FileManager {
      *
      * @return A list of files, selected by the user.
      */
-    public ArrayList<File> retrieveAnimeFiles() {
+    public List<File> retrieveAnimeFiles() {
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(directoryPath);
         chooser.setTitle("Select anime's files.");
@@ -42,7 +41,7 @@ public class FileManager {
 
         if (listOfAnimeFiles != null) {
             directoryPath = listOfAnimeFiles.get(0);
-            return (ArrayList<File>) listOfAnimeFiles;
+            return listOfAnimeFiles;
         } else {
             return null;
         }
@@ -96,12 +95,13 @@ public class FileManager {
     /**
      * Allow to get the anime's title and the url where to find episodes titles.
      *
-     * @param animeNumber A string representing the MyAnimeList ID number of the
+     * @param animeId A string representing the MyAnimeList ID number of the
      * episode.
+     * @param anime An anime object to store data.
      */
-    public void retrieveAnimeData(String animeNumber, Anime anime) {
+    public void retrieveAnimeData(String animeId, Anime anime) {
         try {
-            File textFile = new File("fetched_files/" + animeNumber + ".txt");
+            File textFile = new File("fetched_files/" + animeId + ".txt");
 
             if (textFile.exists()) {
                 BufferedReader br = new BufferedReader(new FileReader(textFile));

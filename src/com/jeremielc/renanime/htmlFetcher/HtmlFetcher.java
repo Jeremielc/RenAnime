@@ -25,7 +25,7 @@ public class HtmlFetcher {
     }
 
     private void fetchContent() {
-        String animeId = retrieveAnimeIdentifier(baseUrl);
+        animeId = retrieveAnimeIdentifier(baseUrl);
 
         File dbDir = new File("fetched_files/");
         if (!dbDir.exists()) {
@@ -89,16 +89,16 @@ public class HtmlFetcher {
     }
 
     private String retrieveAnimeIdentifier(String url) {
-        String animeId = null, previousToken;
+        String id = null, previousToken;
         StringTokenizer st = new StringTokenizer(url, "/");
 
         do {
-            previousToken = animeId;
-            animeId = st.nextToken();
+            previousToken = id;
+            id = st.nextToken();
         } while (st.hasMoreTokens());
 
-        animeId = previousToken;
-        return animeId;
+        id = previousToken;
+        return id;
     }
 
     private String retrieveAnimeEpisodes(String rawString) {
