@@ -24,13 +24,13 @@ public class HtmlFetcher {
     public void fetchContent(String baseUrl) {
         String animeNumber = retrieveAnimeNumber(baseUrl);
 
-        File dbDir = new File("database/");
+        File dbDir = new File("fetched_files/");
         if (!dbDir.exists()) {
             dbDir.mkdir();
         }
 
         if (dbDir.exists()) {
-            File dbFile = new File("database/" + animeNumber + ".txt");
+            File dbFile = new File("fetched_files/" + animeNumber + ".txt");
 
             try {
                 URL url = new URL(baseUrl);
@@ -79,13 +79,13 @@ public class HtmlFetcher {
                     br.close();
                 }
             } catch (IOException ex) {
-                System.err.println("Cannot create file for database.");
+                System.err.println("Cannot create file for fetched_files.");
                 ex.printStackTrace(System.err);
             }
         }
     }
 
-    private String retrieveAnimeNumber(String url) {
+    public String retrieveAnimeNumber(String url) {
         String animeNumber = null, previousToken;
         StringTokenizer st = new StringTokenizer(url, "/");
 
@@ -93,9 +93,6 @@ public class HtmlFetcher {
             previousToken = animeNumber;
             animeNumber = st.nextToken();
         } while (st.hasMoreTokens());
-        /*{
-            animeNumber = st.nextToken();
-        }*/
 
         return previousToken;
     }
