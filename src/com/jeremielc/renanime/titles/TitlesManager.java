@@ -1,7 +1,6 @@
 package com.jeremielc.renanime.titles;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 /**

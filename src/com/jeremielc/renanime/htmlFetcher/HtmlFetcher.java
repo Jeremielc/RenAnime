@@ -57,12 +57,12 @@ public class HtmlFetcher {
                                     readedLine = br.readLine();
 
                                     fw.write("title : " + retrieveAnimeTitle(readedLine) + "\n");
-                                    System.out.println("\ttitle : " + retrieveAnimeTitle(readedLine));
+                                    //System.out.println("\ttitle : " + retrieveAnimeTitle(readedLine));
 
                                     while ((readedLine = br.readLine()) != null) {
                                         if (readedLine.contains("episode\">Episodes</a>")) {
                                             fw.write("episodes : " + retrieveAnimeEpisodes(readedLine) + "\n");
-                                            System.out.println("\tepisodes : " + retrieveAnimeEpisodes(readedLine));
+                                            //System.out.println("\tepisodes : " + retrieveAnimeEpisodes(readedLine));
                                             isThereEpisodeLink = true;
                                             break;
                                         }
@@ -70,7 +70,7 @@ public class HtmlFetcher {
 
                                     if (!isThereEpisodeLink) {
                                         fw.write("episodes : none\n");
-                                        System.out.println("\tepisodes : none\n");
+                                        //System.out.println("\tepisodes : none\n");
                                     }
 
                                     break;

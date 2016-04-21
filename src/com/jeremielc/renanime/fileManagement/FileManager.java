@@ -85,7 +85,7 @@ public class FileManager {
                         + fileExtension;
             }
 
-            System.out.println("Path : " + path);
+            //System.out.println("Path : " + path);
 
             dest = new File(path);
             listOfAnimeFiles.get(i).renameTo(dest);
@@ -110,10 +110,21 @@ public class FileManager {
 
                 br.close();
             } else {
-                System.out.println("Unable to load " + textFile.getName());
+                System.err.println("Unable to load " + textFile.getName());
             }
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
         }
+    }
+    
+    public void cleanFetchDir() {
+        File fetchDir = new File("fetched_files/");
+        if (fetchDir.exists()) {
+            for (File f : fetchDir.listFiles()) {
+                f.delete();
+            }
+        }
+        
+        fetchDir.delete();
     }
 }

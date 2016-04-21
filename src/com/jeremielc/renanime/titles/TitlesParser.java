@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author Jérémie Leclerc
+ * @author jeremielc : le.microarchitechte@gmail.com
  */
 public class TitlesParser {
 
@@ -75,7 +75,7 @@ public class TitlesParser {
                 while ((readedLine = br.readLine()) != null) {
                     if (readedLine.contains("Episodes<span class=") && readedLine.endsWith(")</span>")) {
                         episodeNumber = retrieveEpisodeNumber(readedLine);
-                        System.out.println("episode number : " + episodeNumber);
+                        //System.out.println("episode number : " + episodeNumber);
                         break;
                     }
                 }

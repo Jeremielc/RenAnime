@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Jérémie Leclerc
+ * @author jeremielc : le.microarchitechte@gmail.com
  */
 public class Anime {
     private String AnimeTitle, animeId, episodeUrl;

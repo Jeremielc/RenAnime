@@ -7,7 +7,6 @@ import com.jeremielc.renanime.titles.TitlesManager;
 import com.jeremielc.renanime.titles.TitlesParser;
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -173,8 +172,10 @@ public class RootLayoutController implements Initializable {
                 }
             }
         } else {
-            System.out.println("Please specifiy a path and a name for the anime.");
+            System.err.println("Please specifiy a path and a name for the anime.");
         }
+        
+        fm.cleanFetchDir();
     }
 
     public void setOwner(Window owner) {
