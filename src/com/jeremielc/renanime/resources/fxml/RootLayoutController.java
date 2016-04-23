@@ -3,13 +3,13 @@ package com.jeremielc.renanime.resources.fxml;
 import com.jeremielc.renanime.fileManagement.FileManager;
 import com.jeremielc.renanime.htmlFetcher.HtmlFetcher;
 import com.jeremielc.renanime.pojo.Anime;
+import com.jeremielc.renanime.pojo.AnimeFile;
 import com.jeremielc.renanime.titles.TitlesManager;
-import java.io.File;
 import java.net.URL;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.TreeSet;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,7 +30,7 @@ public class RootLayoutController implements Initializable {
     private TextField animeName, animeFolderPath;
     @FXML
     private TextArea titlesArea;
-    private List<File> listOfAnimeFiles;
+    private TreeSet<AnimeFile> listOfAnimeFiles;
     private Window owner;
 
     public RootLayoutController() {
@@ -76,7 +76,7 @@ public class RootLayoutController implements Initializable {
         listOfAnimeFiles = fm.retrieveAnimeFiles();
 
         if (listOfAnimeFiles != null) {
-            animeFolderPath.setText(listOfAnimeFiles.get(0).getParent());
+            animeFolderPath.setText(listOfAnimeFiles.first().getAnimeFile().getParent());
         }
     }
 

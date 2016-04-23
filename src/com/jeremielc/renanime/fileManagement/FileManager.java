@@ -1,12 +1,15 @@
 package com.jeremielc.renanime.fileManagement;
 
 import com.jeremielc.renanime.pojo.Anime;
+import com.jeremielc.renanime.pojo.AnimeFile;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 import javafx.stage.FileChooser;
 
 /**
@@ -32,7 +35,7 @@ public class FileManager {
      *
      * @return A list of files, selected by the user.
      */
-    public List<File> retrieveAnimeFiles() {
+    public TreeSet<AnimeFile> retrieveAnimeFiles() {
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(directoryPath);
         chooser.setTitle("Select anime's files.");
@@ -41,7 +44,13 @@ public class FileManager {
 
         if (listOfAnimeFiles != null) {
             directoryPath = listOfAnimeFiles.get(0);
-            return listOfAnimeFiles;
+            
+            TreeSet<AnimeFile> animeFileList = new TreeSet<>();
+            for (File f : listOfAnimeFiles) {
+                animeFileList.add(new AnimeFile(f));
+            }
+            
+            return animeFileList;
         } else {
             return null;
         }
@@ -57,20 +66,25 @@ public class FileManager {
      * @param isThereTitles Indicate if titles must be writen or not. True if
      * titles must be present in the file name, false otherwise.
      */
-    public void renameAnimeFiles(String animeName, List<File> listOfAnimeFiles, List<String> listOfTitles, boolean isThereTitles) {
+    public void renameAnimeFiles(String animeName, TreeSet<AnimeFile> listOfAnimeFiles, List<String> listOfTitles, boolean isThereTitles) {
         File dest;
         StringTokenizer st;
         String path, fileExtension = "";
         int episodeCount = listOfAnimeFiles.size();
         int integerSizeMax = String.valueOf(episodeCount).length();
 
-        for (int i = 0; i < listOfAnimeFiles.size(); i++) {
-            st = new StringTokenizer(listOfAnimeFiles.get(i).getName(), ".");
+        //for (int i = 0; i < listOfAnimeFiles.size(); i++) {
+        int i = 0;
+        Iterator<AnimeFile> iter = listOfAnimeFiles.iterator();
+        
+        while (iter.hasNext()) {
+            AnimeFile iteration = iter.next();
+            st = new StringTokenizer(iteration.getName(), ".");
             while (st.hasMoreTokens()) {
                 fileExtension = st.nextToken();
             }
 
-            path = listOfAnimeFiles.get(i).getParent() + File.separator;
+            path = iteration.getAnimeFile().getParent() + File.separator;
             if (isThereTitles) {
                 path += animeName + " - " + "Episode " + String.format("%0" + integerSizeMax + "d", i + 1);
 
@@ -87,7 +101,9 @@ public class FileManager {
 
             //System.out.println("Path : " + path);
             dest = new File(path);
-            listOfAnimeFiles.get(i).renameTo(dest);
+            iteration.getAnimeFile().renameTo(dest);
+            
+            i++;
         }
     }
 

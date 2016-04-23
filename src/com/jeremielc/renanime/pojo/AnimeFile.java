@@ -1,6 +1,8 @@
 package com.jeremielc.renanime.pojo;
 
+import com.jeremielc.renanime.utils.NaturalOrderComparator;
 import java.io.File;
+import java.util.Comparator;
 
 /**
  *
@@ -20,7 +22,9 @@ public class AnimeFile implements Comparable<AnimeFile> {
 
     @Override
     public int compareTo(AnimeFile animeFile) {
-        return name.compareToIgnoreCase(animeFile.getName());
+        NaturalOrderComparator noc = new NaturalOrderComparator();
+        
+        return noc.compare(this.name, animeFile.name);
     }
 
     public String getName() {
