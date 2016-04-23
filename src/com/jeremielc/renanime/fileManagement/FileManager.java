@@ -86,14 +86,13 @@ public class FileManager {
             }
 
             //System.out.println("Path : " + path);
-
             dest = new File(path);
             listOfAnimeFiles.get(i).renameTo(dest);
         }
     }
 
     /**
-     * Allow to get the anime's title and the url where to find episodes titles 
+     * Allow to get the anime's title and the url where to find episodes titles
      * from a file.
      *
      * @param animeId A string representing the MyAnimeList ID number of the
@@ -107,7 +106,7 @@ public class FileManager {
             if (textFile.exists()) {
                 try (BufferedReader br = new BufferedReader(new FileReader(textFile))) {
                     anime.setAnimeTitle(br.readLine().replace("title : ", "").trim());
-                    anime.setEpisodeUrl(br.readLine().replace("episodes : ", "").trim());
+                    anime.setEpisodesUrl(br.readLine().replace("episodes : ", "").trim());
                 }
             } else {
                 System.err.println("Unable to load " + textFile.getName());

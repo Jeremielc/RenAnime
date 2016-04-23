@@ -137,7 +137,7 @@ public class RootLayoutController implements Initializable {
 
                 if (titlesArea.getText().contains("http://myanimelist.net/anime")) {  //If titles have to be fetch from my anime list website.
                     HtmlFetcher hf = new HtmlFetcher(titlesArea.getText());
-                    
+
                     anime.setAnimeId(hf.getAnimeId());
                     anime.setAnimeTitle(hf.getAnimeTitle());
                     anime.setEpisodesUrl(hf.getAnimeEpUrl());
@@ -179,6 +179,7 @@ public class RootLayoutController implements Initializable {
 
     /**
      * Allow to set the owner window.
+     *
      * @param owner The owner window.
      */
     public void setOwner(Window owner) {

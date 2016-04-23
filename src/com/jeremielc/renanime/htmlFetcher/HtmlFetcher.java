@@ -162,7 +162,7 @@ public class HtmlFetcher {
 
         return episodeLink;
     }
-    
+
     /**
      * Parse the anime URL to get the anime identificaion number.
      *
@@ -249,6 +249,7 @@ public class HtmlFetcher {
 
     /**
      * Allow to get the anime identifier.
+     *
      * @return The anime identifier.
      */
     public String getAnimeId() {
@@ -257,6 +258,7 @@ public class HtmlFetcher {
 
     /**
      * Allow to set the anime identifier.
+     *
      * @param animeId The anime identifier.
      */
     public void setAnimeId(String animeId) {
@@ -265,6 +267,7 @@ public class HtmlFetcher {
 
     /**
      * Allow to get the anime title.
+     *
      * @return The anime title.
      */
     public String getAnimeTitle() {
@@ -273,6 +276,7 @@ public class HtmlFetcher {
 
     /**
      * Allow to set the anime title.
+     *
      * @param animeTitle The anime title.
      */
     public void setAnimeTitle(String animeTitle) {
@@ -281,6 +285,7 @@ public class HtmlFetcher {
 
     /**
      * Allow to get the anime episodes URL.
+     *
      * @return The anime episodes URL.
      */
     public String getAnimeEpUrl() {
@@ -289,6 +294,7 @@ public class HtmlFetcher {
 
     /**
      * Allow to set the anime episodes URL.
+     *
      * @param animeEpUrl The anime episodes URL.
      */
     public void setAnimeEpUrl(String animeEpUrl) {
@@ -297,6 +303,7 @@ public class HtmlFetcher {
 
     /**
      * Allow to get the episodes list.
+     *
      * @return The episodes list.
      */
     public ArrayList<String> getEpisodesList() {
@@ -305,6 +312,7 @@ public class HtmlFetcher {
 
     /**
      * Allow to set the episodes list.
+     *
      * @param episodesList The episodes list.
      */
     public void setEpisodesList(ArrayList<String> episodesList) {
