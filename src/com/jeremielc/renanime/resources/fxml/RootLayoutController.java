@@ -7,6 +7,7 @@ import com.jeremielc.renanime.titles.TitlesManager;
 import com.jeremielc.renanime.titles.TitlesParser;
 import java.io.File;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -137,15 +138,16 @@ public class RootLayoutController implements Initializable {
 
                 if (titlesArea.getText().contains("http://myanimelist.net/anime")) {  //If titles have to be fetch from my anime list website.
                     HtmlFetcher hf = new HtmlFetcher(titlesArea.getText());
+                    
                     anime.setAnimeId(hf.getAnimeId());
+                    anime.setAnimeTitle(hf.getAnimeTitle());
                     anime.setEpisodeUrl(hf.getAnimeEpUrl());
-                    fm.retrieveAnimeData(anime.getAnimeId(), anime);
-                    TitlesParser tp = new TitlesParser(anime.getAnimeId(), anime.getEpisodeUrl());
-                    anime.setEpisodeList(tp.parseTitles());
+                    anime.setEpisodeList(hf.getEpisodeList());
 
                     String fullTitleString = "";
-                    for (String str : anime.getEpisodeList()) {
-                        fullTitleString += str + '\n';
+                    Iterator iter = anime.getEpisodeList().iterator();
+                    while (iter.hasNext()) {
+                        fullTitleString += iter.next() + "\n";
                     }
 
                     titlesArea.setText(fullTitleString);

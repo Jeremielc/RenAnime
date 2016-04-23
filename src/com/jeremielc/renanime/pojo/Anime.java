@@ -52,6 +52,4 @@ public class Anime {
     public void setEpisodeList(ArrayList<String> episodeList) {
         this.episodeList = episodeList;
     }
-    
-    
 }

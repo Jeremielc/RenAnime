@@ -1,12 +1,11 @@
 package com.jeremielc.renanime.htmlFetcher;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
@@ -15,77 +14,151 @@ import java.util.StringTokenizer;
  */
 public class HtmlFetcher {
 
-    public static final int MAX_ANIME_NUMBER = 33212;
+    //public static final int MAX_ANIME_NUMBER = 33212;
     private final String baseUrl;
     private String animeId, animeTitle, animeEpUrl;
+    private ArrayList<String> episodeList;
+    private int episodeNumber;
 
     public HtmlFetcher(String baseUrl) {
         this.baseUrl = baseUrl;
+        animeId = "";
+        animeTitle = "";
+        animeEpUrl = "";
+        episodeList = new ArrayList<>();
+        episodeNumber = 0;
         fetchContent();
     }
 
     private void fetchContent() {
         animeId = retrieveAnimeIdentifier(baseUrl);
 
-        File dbDir = new File("fetched_files/");
-        if (!dbDir.exists()) {
-            dbDir.mkdir();
-        }
+        try {
+            URL url = new URL(baseUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
 
-        if (dbDir.exists()) {
-            File dbFile = new File("fetched_files/" + animeId + ".txt");
+            int code = connection.getResponseCode();
 
-            try {
-                URL url = new URL(baseUrl);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.connect();
+            if (code == 200) {
+                BufferedReader br;
+                Boolean isThereEpisodeLink = false;
 
-                int code = connection.getResponseCode();
+                br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-                if (code == 200) {
-                    BufferedReader br;
-                    Boolean isThereEpisodeLink = false;
+                String readedLine;
+                while ((readedLine = br.readLine()) != null) {
+                    if (!readedLine.isEmpty()) {
+                        if (readedLine.contains("<title>")) {
+                            readedLine = br.readLine();
 
-                    try (FileWriter fw = new FileWriter(dbFile)) {
-                        br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                            animeTitle = retrieveAnimeTitle(readedLine);
 
-                        String readedLine;
-                        while ((readedLine = br.readLine()) != null) {
-                            if (!readedLine.isEmpty()) {
-                                if (readedLine.contains("<title>")) {
-                                    readedLine = br.readLine();
-
-                                    fw.write("title : " + retrieveAnimeTitle(readedLine) + "\n");
-                                    //System.out.println("\ttitle : " + retrieveAnimeTitle(readedLine));
-
-                                    while ((readedLine = br.readLine()) != null) {
-                                        if (readedLine.contains("episode\">Episodes</a>")) {
-                                            fw.write("episodes : " + retrieveAnimeEpisodes(readedLine) + "\n");
-                                            //System.out.println("\tepisodes : " + retrieveAnimeEpisodes(readedLine));
-                                            isThereEpisodeLink = true;
-                                            break;
-                                        }
-                                    }
-
-                                    if (!isThereEpisodeLink) {
-                                        fw.write("episodes : none\n");
-                                        //System.out.println("\tepisodes : none\n");
-                                    }
-
+                            while ((readedLine = br.readLine()) != null) {
+                                if (readedLine.contains("episode\">Episodes</a>")) {
+                                    animeEpUrl = retrieveAnimeEpisodes(readedLine);
+                                    isThereEpisodeLink = true;
                                     break;
                                 }
                             }
+
+                            if (!isThereEpisodeLink) {
+                                animeEpUrl = "none";
+                            }
+
+                            break;
                         }
                     }
-
-                    br.close();
                 }
-            } catch (IOException ex) {
-                System.err.println("Cannot create file for fetched_files.");
-                ex.printStackTrace(System.err);
+
+                br.close();
             }
+        } catch (IOException ex) {
+            System.err.println("Cannot open link. Check your informations.");
+            ex.printStackTrace(System.err);
         }
+
+        fetchTitles();
+    }
+
+    private void fetchTitles() {
+        try {
+            URL url = new URL(animeEpUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            int code = connection.getResponseCode();
+
+            if (code == 200) {
+                try {
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                        String readedLine;
+                        while ((readedLine = br.readLine()) != null) {
+                            if (readedLine.contains("Episodes<span class=") && readedLine.endsWith(")</span>")) {
+                                episodeNumber = retrieveEpisodeNumber(readedLine);
+                                break;
+                            }
+                        }
+                        
+                        int numFetchedEpisodeTitle = 0;
+                        while ((readedLine = br.readLine()) != null) {
+                            if (numFetchedEpisodeTitle < episodeNumber) {
+                                if (readedLine.contains("<td class=\"episode-title\">") && readedLine.contains("<a href=\"" + animeEpUrl) && (readedLine.endsWith("</a>"))) {
+                                    episodeList.add(retrieveEpisodeTitle(readedLine));
+                                    numFetchedEpisodeTitle++;
+                                }
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                } catch (IOException ex) {
+                    System.err.println("Cannot read data from html connection.");
+                    ex.printStackTrace(System.err);
+                }
+            }
+        } catch (IOException ex) {
+            System.err.println("Cannot open html connection.");
+            ex.printStackTrace(System.err);
+        }
+    }
+
+    private int retrieveEpisodeNumber(String line) {
+        String epNumber = line;
+
+        StringTokenizer st = new StringTokenizer(line, "(");
+        while (st.hasMoreTokens()) {
+            epNumber = st.nextToken();
+        }
+
+        epNumber = epNumber.replaceAll("</span>", "");
+
+        st = new StringTokenizer(epNumber, "/");
+        while (st.hasMoreTokens()) {
+            epNumber = st.nextToken();
+        }
+
+        epNumber = epNumber.replace(")", "");
+        int epNum = Integer.parseInt(epNumber);
+
+        return epNum;
+    }
+
+    private String retrieveEpisodeTitle(String line) {
+        String title = line.replaceAll("</a>", "");
+        StringTokenizer st = new StringTokenizer(title, ">");
+
+        while (st.hasMoreTokens()) {
+            title = st.nextToken();
+        }
+
+        title = title.replaceAll("&#039;", "'");
+        title = title.replaceAll("[?]+", "!");
+        title = title.replaceAll(":", "");
+
+        return title;
     }
 
     private String retrieveAnimeIdentifier(String url) {
@@ -98,6 +171,7 @@ public class HtmlFetcher {
         } while (st.hasMoreTokens());
 
         id = previousToken;
+
         return id;
     }
 
@@ -107,6 +181,7 @@ public class HtmlFetcher {
         episodeLink = st.nextToken();
 
         animeEpUrl = episodeLink;
+
         return episodeLink;
     }
 
@@ -115,6 +190,7 @@ public class HtmlFetcher {
         cleanString = cleanString.trim();
 
         animeTitle = cleanString;
+
         return cleanString;
     }
 
@@ -141,6 +217,12 @@ public class HtmlFetcher {
     public void setAnimeEpUrl(String animeEpUrl) {
         this.animeEpUrl = animeEpUrl;
     }
-    
-    
+
+    public ArrayList<String> getEpisodeList() {
+        return episodeList;
+    }
+
+    public void setEpisodeList(ArrayList<String> episodeList) {
+        this.episodeList = episodeList;
+    }
 }

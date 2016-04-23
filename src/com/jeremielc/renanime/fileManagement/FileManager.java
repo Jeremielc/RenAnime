@@ -93,7 +93,8 @@ public class FileManager {
     }
 
     /**
-     * Allow to get the anime's title and the url where to find episodes titles.
+     * Allow to get the anime's title and the url where to find episodes titles 
+     * from a file.
      *
      * @param animeId A string representing the MyAnimeList ID number of the
      * episode.
