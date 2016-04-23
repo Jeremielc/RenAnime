@@ -1,6 +1,10 @@
 package com.jeremielc.renanime.fileManagement;
 
+import com.jeremielc.renanime.pojo.Anime;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
 import javafx.stage.FileChooser;
@@ -81,11 +85,34 @@ public class FileManager {
                         + fileExtension;
             }
 
-            System.out.println("Path : " + path);
-
+            //System.out.println("Path : " + path);
             dest = new File(path);
             listOfAnimeFiles.get(i).renameTo(dest);
         }
     }
 
+    /**
+     * Allow to get the anime's title and the url where to find episodes titles
+     * from a file.
+     *
+     * @param animeId A string representing the MyAnimeList ID number of the
+     * episode.
+     * @param anime An anime object to store data.
+     */
+    public void retrieveAnimeData(String animeId, Anime anime) {
+        try {
+            File textFile = new File("fetched_files/" + animeId + ".txt");
+
+            if (textFile.exists()) {
+                try (BufferedReader br = new BufferedReader(new FileReader(textFile))) {
+                    anime.setAnimeTitle(br.readLine().replace("title : ", "").trim());
+                    anime.setEpisodesUrl(br.readLine().replace("episodes : ", "").trim());
+                }
+            } else {
+                System.err.println("Unable to load " + textFile.getName());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
+    }
 }

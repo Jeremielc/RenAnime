@@ -1,7 +1,6 @@
-package com.jeremielc.renanime.utils;
+package com.jeremielc.renanime.titles;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -24,13 +23,12 @@ public class TitlesManager {
      * @param fullTitleString A string in the form "title_1;title_2;..."
      * @return A list of string containing all the provided titles.
      */
-    public List<String> retrieveTitleList(String fullTitleString) {
-        List<String> listOfTitles = new ArrayList<>();
+    public ArrayList<String> retrieveTitleList(String fullTitleString) {
+        ArrayList<String> listOfTitles = new ArrayList<>();
 
         fullTitleString = fullTitleString.replace("\r", "");
-        fullTitleString = fullTitleString.replace("\n", "");
 
-        StringTokenizer st = new StringTokenizer(fullTitleString, ";");
+        StringTokenizer st = new StringTokenizer(fullTitleString, "\n");
 
         while (st.hasMoreElements()) {
             listOfTitles.add(st.nextToken().trim());
@@ -48,8 +46,8 @@ public class TitlesManager {
      * files.
      * @return A new List with empty titles where they were missing.
      */
-    public List<String> alignTitleNumber(List<String> titleList, int episodeNumber) {
-        List<String> newTitleList = new ArrayList<>();
+    public ArrayList<String> alignTitleNumber(ArrayList<String> titleList, int episodeNumber) {
+        ArrayList<String> newTitleList = new ArrayList<>();
 
         for (int i = 0; i < episodeNumber; i++) {
             if (i < titleList.size()) {

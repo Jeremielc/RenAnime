@@ -1,4 +1,6 @@
 com.jeremielc.renanime
 com.jeremielc.renanime.fileManagement
+com.jeremielc.renanime.htmlFetcher
+com.jeremielc.renanime.pojo
 com.jeremielc.renanime.resources.fxml
-com.jeremielc.renanime.utils
+com.jeremielc.renanime.titles

@@ -1,9 +1,12 @@
 package com.jeremielc.renanime.resources.fxml;
 
 import com.jeremielc.renanime.fileManagement.FileManager;
-import com.jeremielc.renanime.utils.TitlesManager;
+import com.jeremielc.renanime.htmlFetcher.HtmlFetcher;
+import com.jeremielc.renanime.pojo.Anime;
+import com.jeremielc.renanime.titles.TitlesManager;
 import java.io.File;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -27,12 +30,10 @@ public class RootLayoutController implements Initializable {
     private TextField animeName, animeFolderPath;
     @FXML
     private TextArea titlesArea;
-    private final FileManager fm;
     private List<File> listOfAnimeFiles;
     private Window owner;
 
     public RootLayoutController() {
-        fm = new FileManager();
         listOfAnimeFiles = null;
     }
 
@@ -71,6 +72,7 @@ public class RootLayoutController implements Initializable {
      */
     @FXML
     public void handleBrowse() {
+        FileManager fm = new FileManager();
         listOfAnimeFiles = fm.retrieveAnimeFiles();
 
         if (listOfAnimeFiles != null) {
@@ -112,10 +114,14 @@ public class RootLayoutController implements Initializable {
      */
     @FXML
     public void handleRenanime() {
+        Anime anime = new Anime();
+        FileManager fm = new FileManager();
+
         if (!animeName.getText().equals("") && !animeFolderPath.getText().equals("")) {
+            anime.setAnimeTitle(animeName.getText().trim());
             Optional<ButtonType> result;
 
-            if (titlesArea.getText().equals("")) {  //If ther is no titles
+            if (titlesArea.getText().equals("")) {  //If there is no titles
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.initOwner(owner);
                 alert.setTitle("Verify data.");
@@ -128,29 +134,54 @@ public class RootLayoutController implements Initializable {
                 }
             } else if (!titlesArea.getText().equals("")) {
                 TitlesManager tm = new TitlesManager();
-                List<String> titles = tm.retrieveTitleList(titlesArea.getText());
 
-                if (titles.size() < listOfAnimeFiles.size()) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.initOwner(owner);
-                    alert.setTitle("Verify data.");
-                    alert.setHeaderText("It appears that the number of titles is different of the number of episodes.");
-                    alert.setContentText("Click 'Cancel' to check your informations or 'OK' to proceed without missing titles.");
+                if (titlesArea.getText().contains("http://myanimelist.net/anime")) {  //If titles have to be fetch from my anime list website.
+                    HtmlFetcher hf = new HtmlFetcher(titlesArea.getText());
 
-                    result = alert.showAndWait();
-                    if (result.isPresent() && result.get() == ButtonType.OK) {
-                        titles = tm.alignTitleNumber(titles, listOfAnimeFiles.size());
-                        fm.renameAnimeFiles(animeName.getText().trim(), listOfAnimeFiles, titles, true);
+                    anime.setAnimeId(hf.getAnimeId());
+                    anime.setAnimeTitle(hf.getAnimeTitle());
+                    anime.setEpisodesUrl(hf.getAnimeEpUrl());
+                    anime.setEpisodesList(hf.getEpisodesList());
+
+                    String fullTitleString = "";
+                    Iterator iter = anime.getEpisodesList().iterator();
+                    while (iter.hasNext()) {
+                        fullTitleString += iter.next() + "\n";
                     }
+
+                    titlesArea.setText(fullTitleString);
                 } else {
-                    fm.renameAnimeFiles(animeName.getText().trim(), listOfAnimeFiles, titles, true);
+                    anime.setEpisodesList(tm.retrieveTitleList(titlesArea.getText()));
+                }
+
+                if (anime.getEpisodesList() != null) {
+                    if (anime.getEpisodesList().size() < listOfAnimeFiles.size()) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.initOwner(owner);
+                        alert.setTitle("Verify data.");
+                        alert.setHeaderText("It appears that the number of titles is different of the number of episodes.");
+                        alert.setContentText("Click 'Cancel' to check your informations or 'OK' to proceed without missing titles.");
+
+                        result = alert.showAndWait();
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            anime.setEpisodesList(tm.alignTitleNumber(anime.getEpisodesList(), listOfAnimeFiles.size()));
+                            fm.renameAnimeFiles(animeName.getText().trim(), listOfAnimeFiles, anime.getEpisodesList(), true);
+                        }
+                    } else {
+                        fm.renameAnimeFiles(animeName.getText().trim(), listOfAnimeFiles, anime.getEpisodesList(), true);
+                    }
                 }
             }
         } else {
-            System.out.println("Please specifiy a path and a name for the anime.");
+            System.err.println("Please specifiy a path and a name for the anime.");
         }
     }
 
+    /**
+     * Allow to set the owner window.
+     *
+     * @param owner The owner window.
+     */
     public void setOwner(Window owner) {
         this.owner = owner;
     }
