@@ -105,11 +105,10 @@ public class FileManager {
             File textFile = new File("fetched_files/" + animeId + ".txt");
 
             if (textFile.exists()) {
-                BufferedReader br = new BufferedReader(new FileReader(textFile));
-                anime.setAnimeTitle(br.readLine().replace("title : ", "").trim());
-                anime.setEpisodeUrl(br.readLine().replace("episodes : ", "").trim());
-
-                br.close();
+                try (BufferedReader br = new BufferedReader(new FileReader(textFile))) {
+                    anime.setAnimeTitle(br.readLine().replace("title : ", "").trim());
+                    anime.setEpisodeUrl(br.readLine().replace("episodes : ", "").trim());
+                }
             } else {
                 System.err.println("Unable to load " + textFile.getName());
             }
