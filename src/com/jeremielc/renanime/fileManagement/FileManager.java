@@ -117,15 +117,4 @@ public class FileManager {
             ex.printStackTrace(System.err);
         }
     }
-    
-    public void cleanFetchDir() {
-        File fetchDir = new File("fetched_files/");
-        if (fetchDir.exists()) {
-            for (File f : fetchDir.listFiles()) {
-                f.delete();
-            }
-        }
-        
-        fetchDir.delete();
-    }
 }
