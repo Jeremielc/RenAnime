@@ -140,22 +140,22 @@ public class RootLayoutController implements Initializable {
                     
                     anime.setAnimeId(hf.getAnimeId());
                     anime.setAnimeTitle(hf.getAnimeTitle());
-                    anime.setEpisodeUrl(hf.getAnimeEpUrl());
-                    anime.setEpisodeList(hf.getEpisodeList());
+                    anime.setEpisodesUrl(hf.getAnimeEpUrl());
+                    anime.setEpisodesList(hf.getEpisodesList());
 
                     String fullTitleString = "";
-                    Iterator iter = anime.getEpisodeList().iterator();
+                    Iterator iter = anime.getEpisodesList().iterator();
                     while (iter.hasNext()) {
                         fullTitleString += iter.next() + "\n";
                     }
 
                     titlesArea.setText(fullTitleString);
                 } else {
-                    anime.setEpisodeList(tm.retrieveTitleList(titlesArea.getText()));
+                    anime.setEpisodesList(tm.retrieveTitleList(titlesArea.getText()));
                 }
 
-                if (anime.getEpisodeList() != null) {
-                    if (anime.getEpisodeList().size() < listOfAnimeFiles.size()) {
+                if (anime.getEpisodesList() != null) {
+                    if (anime.getEpisodesList().size() < listOfAnimeFiles.size()) {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.initOwner(owner);
                         alert.setTitle("Verify data.");
@@ -164,11 +164,11 @@ public class RootLayoutController implements Initializable {
 
                         result = alert.showAndWait();
                         if (result.isPresent() && result.get() == ButtonType.OK) {
-                            anime.setEpisodeList(tm.alignTitleNumber(anime.getEpisodeList(), listOfAnimeFiles.size()));
-                            fm.renameAnimeFiles(animeName.getText().trim(), listOfAnimeFiles, anime.getEpisodeList(), true);
+                            anime.setEpisodesList(tm.alignTitleNumber(anime.getEpisodesList(), listOfAnimeFiles.size()));
+                            fm.renameAnimeFiles(animeName.getText().trim(), listOfAnimeFiles, anime.getEpisodesList(), true);
                         }
                     } else {
-                        fm.renameAnimeFiles(animeName.getText().trim(), listOfAnimeFiles, anime.getEpisodeList(), true);
+                        fm.renameAnimeFiles(animeName.getText().trim(), listOfAnimeFiles, anime.getEpisodesList(), true);
                     }
                 }
             }
@@ -177,6 +177,10 @@ public class RootLayoutController implements Initializable {
         }
     }
 
+    /**
+     * Allow to set the owner window.
+     * @param owner The owner window.
+     */
     public void setOwner(Window owner) {
         this.owner = owner;
     }
