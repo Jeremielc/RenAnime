@@ -26,7 +26,7 @@ public class HtmlFetcher {
      * anime.
      *
      * @param baseUrl An URL formatted like
-     * http://myanimelist.net/anime/<ANIME_ID>/<ANIME_NAME>.
+     * http://myanimelist.net/anime/[ANIME_ID]/[ANIME_NAME].
      */
     public HtmlFetcher(String baseUrl) {
         this.baseUrl = baseUrl;
