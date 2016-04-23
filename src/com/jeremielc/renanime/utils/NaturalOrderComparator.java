@@ -25,6 +25,11 @@ import java.util.Comparator;
  misrepresented as being the original software.
  3. This notice may not be removed or altered from any source distribution.
  */
+/**
+ * Contains method to order string using natural order.
+ *
+ * @author Pierre-Luc Paour : natorder@paour.com
+ */
 public class NaturalOrderComparator implements Comparator {
 
     int compareRight(String a, String b) {

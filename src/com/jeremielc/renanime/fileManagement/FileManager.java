@@ -73,7 +73,6 @@ public class FileManager {
         int episodeCount = listOfAnimeFiles.size();
         int integerSizeMax = String.valueOf(episodeCount).length();
 
-        //for (int i = 0; i < listOfAnimeFiles.size(); i++) {
         int i = 0;
         Iterator<AnimeFile> iter = listOfAnimeFiles.iterator();
         
@@ -99,7 +98,6 @@ public class FileManager {
                         + fileExtension;
             }
 
-            //System.out.println("Path : " + path);
             dest = new File(path);
             iteration.getAnimeFile().renameTo(dest);
             
