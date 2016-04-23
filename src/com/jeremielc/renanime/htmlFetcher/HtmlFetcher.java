@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
+ * Allow to retrieve anime informations from MyAnimeList website.
  *
  * @author jeremielc : le.microarchitechte@gmail.com
  */
@@ -20,6 +21,13 @@ public class HtmlFetcher {
     private ArrayList<String> episodeList;
     private int episodeNumber;
 
+    /**
+     * Instanciate the HTML fetcher using the general MyAnimeList URL for the
+     * anime.
+     *
+     * @param baseUrl An URL formatted like
+     * http://myanimelist.net/anime/<ANIME_ID>/<ANIME_NAME>.
+     */
     public HtmlFetcher(String baseUrl) {
         this.baseUrl = baseUrl;
         animeId = "";
@@ -30,6 +38,14 @@ public class HtmlFetcher {
         fetchContent();
     }
 
+    /**
+     * Retrieve the general informations (the title and the anime's episode URL
+     * if it exists) from the MyAnimeList anime main page. Then, it
+     * automatically call fetchTitles() to retrieve the number of episodes and
+     * the episode list.
+     *
+     * @see fetchTitles()
+     */
     private void fetchContent() {
         animeId = retrieveAnimeIdentifier(baseUrl);
 
@@ -57,7 +73,7 @@ public class HtmlFetcher {
 
                             while ((readedLine = br.readLine()) != null) {
                                 if (readedLine.contains("episode\">Episodes</a>")) {
-                                    animeEpUrl = retrieveAnimeEpisodes(readedLine);
+                                    animeEpUrl = retrieveAnimeEpisodesLink(readedLine);
                                     isThereEpisodeLink = true;
                                     break;
                                 }
@@ -82,6 +98,12 @@ public class HtmlFetcher {
         fetchTitles();
     }
 
+    /**
+     * Allow to retrieve the number of episodes and the episode list.
+     * Automatically called by fetchContent().
+     *
+     * @see fetchContent();
+     */
     private void fetchTitles() {
         try {
             URL url = new URL(animeEpUrl);
@@ -101,7 +123,7 @@ public class HtmlFetcher {
                                 break;
                             }
                         }
-                        
+
                         int numFetchedEpisodeTitle = 0;
                         while ((readedLine = br.readLine()) != null) {
                             if (numFetchedEpisodeTitle < episodeNumber) {
@@ -125,10 +147,68 @@ public class HtmlFetcher {
         }
     }
 
-    private int retrieveEpisodeNumber(String line) {
-        String epNumber = line;
+    /**
+     * Allow to get anime's episode link from MyAnimeList.
+     *
+     * @param rawString The line to parse, containing the episodes link.
+     * @return
+     */
+    private String retrieveAnimeEpisodesLink(String rawString) {
+        StringTokenizer st = new StringTokenizer(rawString, "\"");
+        String episodeLink = st.nextToken();
+        episodeLink = st.nextToken();
 
-        StringTokenizer st = new StringTokenizer(line, "(");
+        animeEpUrl = episodeLink;
+
+        return episodeLink;
+    }
+    
+    /**
+     * Parse the anime URL to get the anime identificaion number.
+     *
+     * @param url The URL to parse.
+     * @return A string representing the anime Identifier.
+     */
+    private String retrieveAnimeIdentifier(String url) {
+        String id = null, previousToken;
+        StringTokenizer st = new StringTokenizer(url, "/");
+
+        do {
+            previousToken = id;
+            id = st.nextToken();
+        } while (st.hasMoreTokens());
+
+        id = previousToken;
+
+        return id;
+    }
+
+    /**
+     * Allow to get the MyAnimeList anime title (Complete, with special
+     * characters).
+     *
+     * @param rawString The line to parse.
+     * @return A string representing the full anime name.
+     */
+    private String retrieveAnimeTitle(String rawString) {
+        String cleanString = rawString.replace(" - MyAnimeList.net", "");
+        cleanString = cleanString.trim();
+
+        animeTitle = cleanString;
+
+        return cleanString;
+    }
+
+    /**
+     * Parse the line containing the number of episodes to get it.
+     *
+     * @param rawString The line to parse.
+     * @return An integer representing the number of episodes.
+     */
+    private int retrieveEpisodeNumber(String rawString) {
+        String epNumber = rawString;
+
+        StringTokenizer st = new StringTokenizer(rawString, "(");
         while (st.hasMoreTokens()) {
             epNumber = st.nextToken();
         }
@@ -146,8 +226,14 @@ public class HtmlFetcher {
         return epNum;
     }
 
-    private String retrieveEpisodeTitle(String line) {
-        String title = line.replaceAll("</a>", "");
+    /**
+     * Parse the line containing an episode title to get it.
+     *
+     * @param rawString The line to parse.
+     * @return A string representing the title.
+     */
+    private String retrieveEpisodeTitle(String rawString) {
+        String title = rawString.replaceAll("</a>", "");
         StringTokenizer st = new StringTokenizer(title, ">");
 
         while (st.hasMoreTokens()) {
@@ -159,39 +245,6 @@ public class HtmlFetcher {
         title = title.replaceAll(":", "");
 
         return title;
-    }
-
-    private String retrieveAnimeIdentifier(String url) {
-        String id = null, previousToken;
-        StringTokenizer st = new StringTokenizer(url, "/");
-
-        do {
-            previousToken = id;
-            id = st.nextToken();
-        } while (st.hasMoreTokens());
-
-        id = previousToken;
-
-        return id;
-    }
-
-    private String retrieveAnimeEpisodes(String rawString) {
-        StringTokenizer st = new StringTokenizer(rawString, "\"");
-        String episodeLink = st.nextToken();
-        episodeLink = st.nextToken();
-
-        animeEpUrl = episodeLink;
-
-        return episodeLink;
-    }
-
-    private String retrieveAnimeTitle(String rawString) {
-        String cleanString = rawString.replace(" - MyAnimeList.net", "");
-        cleanString = cleanString.trim();
-
-        animeTitle = cleanString;
-
-        return cleanString;
     }
 
     public String getAnimeId() {
