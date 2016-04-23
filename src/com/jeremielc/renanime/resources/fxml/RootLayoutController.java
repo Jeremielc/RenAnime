@@ -4,7 +4,6 @@ import com.jeremielc.renanime.fileManagement.FileManager;
 import com.jeremielc.renanime.htmlFetcher.HtmlFetcher;
 import com.jeremielc.renanime.pojo.Anime;
 import com.jeremielc.renanime.titles.TitlesManager;
-import com.jeremielc.renanime.titles.TitlesParser;
 import java.io.File;
 import java.net.URL;
 import java.util.Iterator;
@@ -176,8 +175,6 @@ public class RootLayoutController implements Initializable {
         } else {
             System.err.println("Please specifiy a path and a name for the anime.");
         }
-        
-        fm.cleanFetchDir();
     }
 
     public void setOwner(Window owner) {
