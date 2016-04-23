@@ -18,7 +18,7 @@ public class HtmlFetcher {
     //public static final int MAX_ANIME_NUMBER = 33212;
     private final String baseUrl;
     private String animeId, animeTitle, animeEpUrl;
-    private ArrayList<String> episodeList;
+    private ArrayList<String> episodesList;
     private int episodeNumber;
 
     /**
@@ -33,7 +33,7 @@ public class HtmlFetcher {
         animeId = "";
         animeTitle = "";
         animeEpUrl = "";
-        episodeList = new ArrayList<>();
+        episodesList = new ArrayList<>();
         episodeNumber = 0;
         fetchContent();
     }
@@ -128,7 +128,7 @@ public class HtmlFetcher {
                         while ((readedLine = br.readLine()) != null) {
                             if (numFetchedEpisodeTitle < episodeNumber) {
                                 if (readedLine.contains("<td class=\"episode-title\">") && readedLine.contains("<a href=\"" + animeEpUrl) && (readedLine.endsWith("</a>"))) {
-                                    episodeList.add(retrieveEpisodeTitle(readedLine));
+                                    episodesList.add(retrieveEpisodeTitle(readedLine));
                                     numFetchedEpisodeTitle++;
                                 }
                             } else {
@@ -247,35 +247,67 @@ public class HtmlFetcher {
         return title;
     }
 
+    /**
+     * Allow to get the anime identifier.
+     * @return The anime identifier.
+     */
     public String getAnimeId() {
         return animeId;
     }
 
+    /**
+     * Allow to set the anime identifier.
+     * @param animeId The anime identifier.
+     */
     public void setAnimeId(String animeId) {
         this.animeId = animeId;
     }
 
+    /**
+     * Allow to get the anime title.
+     * @return The anime title.
+     */
     public String getAnimeTitle() {
         return animeTitle;
     }
 
+    /**
+     * Allow to set the anime title.
+     * @param animeTitle The anime title.
+     */
     public void setAnimeTitle(String animeTitle) {
         this.animeTitle = animeTitle;
     }
 
+    /**
+     * Allow to get the anime episodes URL.
+     * @return The anime episodes URL.
+     */
     public String getAnimeEpUrl() {
         return animeEpUrl;
     }
 
+    /**
+     * Allow to set the anime episodes URL.
+     * @param animeEpUrl The anime episodes URL.
+     */
     public void setAnimeEpUrl(String animeEpUrl) {
         this.animeEpUrl = animeEpUrl;
     }
 
-    public ArrayList<String> getEpisodeList() {
-        return episodeList;
+    /**
+     * Allow to get the episodes list.
+     * @return The episodes list.
+     */
+    public ArrayList<String> getEpisodesList() {
+        return episodesList;
     }
 
-    public void setEpisodeList(ArrayList<String> episodeList) {
-        this.episodeList = episodeList;
+    /**
+     * Allow to set the episodes list.
+     * @param episodesList The episodes list.
+     */
+    public void setEpisodesList(ArrayList<String> episodesList) {
+        this.episodesList = episodesList;
     }
 }
