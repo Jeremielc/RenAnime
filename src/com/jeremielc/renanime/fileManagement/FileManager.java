@@ -88,14 +88,14 @@ public class FileManager {
                 path += animeName + " - " + "Episode " + String.format("%0" + integerSizeMax + "d", i + 1);
 
                 if (!listOfTitles.get(i).equals("")) {
-                    path += " - " + listOfTitles.get(i) + "." + fileExtension;
+                    path += " - " + listOfTitles.get(i) + "." + /*iteration.getAnimeFile().getName();// + */fileExtension;
                 } else {
-                    path += "." + fileExtension;
+                    path += "." + /*iteration.getAnimeFile().getName();// + */fileExtension;
                 }
             } else {
                 path += animeName + " - "
                         + "Episode " + String.format("%0" + integerSizeMax + "d", i + 1) + "."
-                        + fileExtension;
+                        + /*iteration.getAnimeFile().getName();// + */fileExtension;
             }
 
             dest = new File(path);

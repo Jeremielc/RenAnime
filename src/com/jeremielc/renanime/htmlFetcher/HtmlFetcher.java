@@ -242,7 +242,8 @@ public class HtmlFetcher {
 
         title = title.replaceAll("&#039;", "'");
         title = title.replaceAll("[?]+", "!");
-        title = title.replaceAll(":", "");
+        title = title.replaceAll("/", " ");
+        title = title.replaceAll(":", " - ");
 
         return title;
     }
