@@ -135,7 +135,7 @@ public class RootLayoutController implements Initializable {
             } else if (!titlesArea.getText().equals("")) {
                 TitlesManager tm = new TitlesManager();
 
-                if (titlesArea.getText().contains("http://myanimelist.net/anime")) {  //If titles have to be fetch from my anime list website.
+                if (titlesArea.getText().contains("myanimelist.net/anime")) {  //If titles have to be fetch from my anime list website.
                     HtmlFetcher hf = new HtmlFetcher(titlesArea.getText());
 
                     anime.setAnimeId(hf.getAnimeId());
